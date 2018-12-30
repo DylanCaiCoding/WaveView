@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="WaveView">
+        <attr name="startAnim" format="boolean" />
+        <attr name="waveCount" format="integer" />
+        <attr name="waterLineHeight" format="dimension" />
+        <attr name="waveAmplitude" format="dimension" />
+        <attr name="waveAmplitude2" format="dimension" />
+        <attr name="waveWidth" format="dimension" />
+        <attr name="waveWidth2" format="dimension" />
+        <attr name="waveDefOffset" format="dimension" />
+        <attr name="waveDefOffset2" format="dimension" />
+        <attr name="waveColor" format="color" />
+        <attr name="waveColor2" format="color" />
+        <attr name="cycleDuration" format="integer" />
+        <attr name="cycleDuration2" format="integer" />
+        <attr name="moveDirection">
+            <enum name="left" value="-1"/>
+            <enum name="right" value="-2"/>
+        </attr>
+        <attr name="waveLocation">
+            <enum name="top" value="-1"/>
+            <enum name="bottom" value="-2"/>
+        </attr>
+        <attr name="drawMode">
+            <enum name="bezier" value="-1"/>
+            <enum name="sin" value="-2"/>
+            <enum name="cos" value="-3"/>
+        </attr>
+    </declare-styleable>
+</resources>

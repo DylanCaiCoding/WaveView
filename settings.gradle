@@ -1,1 +1,1 @@
-include ':app', ':waveview'
+include ':app', ':library'

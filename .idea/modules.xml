@@ -3,8 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/WaveView.iml" filepath="$PROJECT_DIR$/WaveView.iml" />
+      <module fileurl="file://D:\git\WaveView\WaveView.iml" filepath="D:\git\WaveView\WaveView.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/waveview/waveview.iml" filepath="$PROJECT_DIR$/waveview/waveview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
+      <module fileurl="file://D:\git\WaveView\waveview\waveview.iml" filepath="D:\git\WaveView\waveview\waveview.iml" />
     </modules>
   </component>
 </project>
