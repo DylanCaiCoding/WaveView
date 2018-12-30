@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">WaveView</string>
+    <string name="btn_start_text">start</string>
+    <string name="btn_stop_text">stop</string>
+</resources>
