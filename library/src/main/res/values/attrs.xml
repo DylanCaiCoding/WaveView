@@ -4,10 +4,14 @@
         <attr name="startAnim" format="boolean" />
         <attr name="waveCount" format="integer" />
         <attr name="waterLineHeight" format="dimension" />
+        <attr name="waterLineMinHeight" format="dimension" />
+        <attr name="waterLineMaxHeight" format="dimension" />
         <attr name="waveAmplitude" format="dimension" />
         <attr name="waveAmplitude2" format="dimension" />
-        <attr name="waveWidth" format="dimension" />
-        <attr name="waveWidth2" format="dimension" />
+        <attr name="waveLength" format="dimension" />
+        <attr name="waveLength2" format="dimension" />
+        <attr name="waveLengthPercent" format="float" />
+        <attr name="waveLengthPercent2" format="float" />
         <attr name="waveDefOffset" format="dimension" />
         <attr name="waveDefOffset2" format="dimension" />
         <attr name="waveColor" format="color" />
