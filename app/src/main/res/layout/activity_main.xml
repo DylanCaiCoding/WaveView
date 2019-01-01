@@ -16,15 +16,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:moveDirection="left"
         app:startAnim="false"
-        app:waterLineHeight="120dp"
+        app:waterLevelHeight="120dp"
         app:waveAmplitude="15dp"
-        app:waveAmplitude2="10dp"
+        app:waveAmplitude2="15dp"
         app:waveColor="#88afb8ff"
         app:waveColor2="#e2c8ff"
+        app:waveLengthPercent="2"
+        app:waveDefOffsetPercent2="-0.25"
         app:waveCount="2"
-        app:waveLength="100dp"
-        app:waveLength2="400dp"
-        app:waveLocation="bottom" />
+        app:waveLocation="top" />
 
     <Button
         android:id="@+id/btn_start"

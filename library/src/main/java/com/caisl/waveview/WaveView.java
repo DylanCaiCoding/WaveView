@@ -10,9 +10,12 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+
+import java.util.logging.Level;
 
 
 /**
@@ -22,8 +25,6 @@ import android.view.animation.LinearInterpolator;
  * Description: 波浪控件
  */
 public class WaveView extends View {
-
-    private static final String TAG = "WaveView";
     /**
      * 控件宽度
      */
@@ -51,11 +52,11 @@ public class WaveView extends View {
     /**
      * 水位线高度
      */
-    private float mWaterLineHeight;
+    private float mWaterLevelHeight;
     /**
      * 水位线纵坐标
      */
-    private float mWaterLineY;
+    private float mWaterLevelY;
     /**
      * 波浪振幅
      */
@@ -73,13 +74,13 @@ public class WaveView extends View {
      */
     private float mWaveLength2;
     /**
-     * 波浪偏移量
+     * 波浪波长占总宽度百分比
      */
-    private float mOffset;
+    private float mWaveLengthPercent;
     /**
-     * 波浪偏移量2
+     * 波浪波长占总宽度百分比2
      */
-    private float mOffset2;
+    private float mWaveLengthPercent2;
     /**
      * 波浪默认偏移量
      */
@@ -89,13 +90,29 @@ public class WaveView extends View {
      */
     private float mDefOffset2;
     /**
+     * 波浪默认偏移量占波长的百分比
+     */
+    private float mDefOffsetPercent;
+    /**
+     * 波浪默认偏移量占波长的百分比2
+     */
+    private float mDefOffsetPercent2;
+    /**
+     * 波浪偏移量
+     */
+    private float mAnimOffset;
+    /**
+     * 波浪偏移量2
+     */
+    private float mAnimOffset2;
+    /**
      * 波浪当前偏移量
      */
-    private float mLastOffset;
+    private float mLastAnimOffset;
     /**
      * 波浪当前偏移量2
      */
-    private float mLastOffset2;
+    private float mLastAnimOffset2;
     /**
      * 波浪周期时长
      */
@@ -109,7 +126,7 @@ public class WaveView extends View {
      */
     private int mMoveDirection;
     /**
-     * 波浪位置（上、下）
+     * 波浪位置（顶部、底部）
      */
     private int mWaveLocation;
     /**
@@ -149,7 +166,7 @@ public class WaveView extends View {
         super(context, attrs, defStyleAttr);
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.WaveView);
-        mWaterLineHeight = array.getDimension(R.styleable.WaveView_waterLineHeight, 0);
+        mWaterLevelHeight = array.getDimension(R.styleable.WaveView_waterLevelHeight, 0);
         mWaveCount = array.getInteger(R.styleable.WaveView_waveCount, 1);
         mCycleDuration = array.getInteger(R.styleable.WaveView_cycleDuration, 5000);
         mCycleDuration2 = array.getInteger(R.styleable.WaveView_cycleDuration2, mCycleDuration);
@@ -159,8 +176,12 @@ public class WaveView extends View {
         mWaveAmplitude2 = array.getDimension(R.styleable.WaveView_waveAmplitude2, 30);
         mWaveLength = array.getDimension(R.styleable.WaveView_waveLength, 0);
         mWaveLength2 = array.getDimension(R.styleable.WaveView_waveLength2, 0);
+        mWaveLengthPercent = array.getFloat(R.styleable.WaveView_waveLengthPercent, 1);
+        mWaveLengthPercent2 = array.getFloat(R.styleable.WaveView_waveLengthPercent2, 1);
         mDefOffset = array.getDimension(R.styleable.WaveView_waveDefOffset, 0);
-        mDefOffset2 = array.getDimension(R.styleable.WaveView_waveDefOffset, 0);
+        mDefOffset2 = array.getDimension(R.styleable.WaveView_waveDefOffset2, 0);
+        mDefOffsetPercent = array.getFloat(R.styleable.WaveView_waveDefOffsetPercent, 0);
+        mDefOffsetPercent2 = array.getFloat(R.styleable.WaveView_waveDefOffsetPercent2, 0);
         mMoveDirection = array.getInt(R.styleable.WaveView_moveDirection, MOVE_DIRECTION_RIGHT);
         mWaveLocation = array.getInt(R.styleable.WaveView_waveLocation, WAVE_LOCATION_BOTTOM);
         mDrawMode = array.getInt(R.styleable.WaveView_drawMode, DRAW_MODE_BEZIER);
@@ -181,12 +202,12 @@ public class WaveView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (getLayoutParams().width == ViewGroup.LayoutParams.WRAP_CONTENT) {
-            //如果控件宽度是 wrap_content，就改成 match_parent
+            // 如果控件宽度是 wrap_content，就改成 match_parent
             getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
         }
-        if (getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT && mWaterLineHeight > 0) {
-            //如果控件高度是 wrap_content 和设置了水位线高度，则高度设为水位线高度 + 最大振幅
-            int height = (int) (mWaterLineHeight + Math.max(mWaveAmplitude, mWaveAmplitude2));
+        if (getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT && mWaterLevelHeight > 0) {
+            // 如果控件高度是 wrap_content 和设置了水位线高度，则高度设为水位线高度 + 最大振幅
+            int height = (int) (mWaterLevelHeight + Math.max(mWaveAmplitude, mWaveAmplitude2));
             setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), height);
         }
     }
@@ -197,38 +218,37 @@ public class WaveView extends View {
         mTotalWidth = getMeasuredWidth();
         mTotalHeight = getMeasuredHeight();
 
-        if (mWaterLineHeight == 0) {
-            //如果没有设置水位线高度，则水位线纵坐标为 控件高度 - 最大振幅
+        // 用水位线高度计算水位线纵坐标
+        if (mWaterLevelHeight == 0) {
+            // 如果没有设置水位线高度，则水位线纵坐标为 控件高度 - 最大振幅
             if (mWaveLocation == WAVE_LOCATION_TOP) {
-                mWaterLineY = mTotalHeight - Math.max(mWaveAmplitude, mWaveAmplitude2);
+                mWaterLevelY = mTotalHeight - Math.max(mWaveAmplitude, mWaveAmplitude2);
             } else {
-                mWaterLineY = Math.max(mWaveAmplitude, mWaveAmplitude2);
+                mWaterLevelY = Math.max(mWaveAmplitude, mWaveAmplitude2);
             }
         } else {
             if (mWaveLocation == WAVE_LOCATION_TOP) {
-                mWaterLineY = mWaterLineHeight;
+                mWaterLevelY = mWaterLevelHeight;
             } else {
-                mWaterLineY = mTotalHeight - mWaterLineHeight;
+                mWaterLevelY = mTotalHeight - mWaterLevelHeight;
             }
         }
 
+        // 波长如果没有设置具体数值，则为 总宽度 * 波长占总宽度的百分比
         if (mWaveLength == 0) {
-            //如果没有设置波长，则波长为总宽度
-            mWaveLength = mTotalWidth;
+            mWaveLength = mTotalWidth * mWaveLengthPercent;
         }
-        if (mDefOffset >= mWaveLength) {
-            //处理默认偏移量，不超过波长大小
-            mDefOffset = mDefOffset % mWaveLength;
+        // 默认偏移量如果没有设置具体数值，则为 波长 * 默认偏移量占波长的百分比
+        if (mDefOffset == 0) {
+            mDefOffset = mWaveLength * mDefOffsetPercent;
         }
 
         if (mWaveCount > 1) {
             if (mWaveLength2 == 0) {
-                //如果没有设置第二个波长，则第二个波长为第一个波长
-                mWaveLength2 = mWaveLength;
+                mWaveLength2 = mTotalWidth * mWaveLengthPercent2;
             }
-            if (mDefOffset2 >= mWaveLength2) {
-                //处理第二个默认偏移量，不超过第二个波长大小
-                mDefOffset2 = mDefOffset2 % mWaveLength2;
+            if (mDefOffset2 == 0) {
+                mDefOffset2 = mWaveLength2 * mDefOffsetPercent2;
             }
         }
 
@@ -242,10 +262,11 @@ public class WaveView extends View {
         super.onDraw(canvas);
         if (mWaveCount > 1) {
             mPaint.setColor(mWaveColor2);
-            canvas.drawPath(getPath(mWaveLength2, mWaveAmplitude2, mOffset2), mPaint);
+            canvas.drawPath(getPath(mWaveLength2, mWaveAmplitude2, mDefOffset2, mAnimOffset2), mPaint);
         }
         mPaint.setColor(mWaveColor);
-        canvas.drawPath(getPath(mWaveLength, mWaveAmplitude, mOffset), mPaint);
+        canvas.drawPath(getPath(mWaveLength, mWaveAmplitude, mDefOffset, mAnimOffset), mPaint);
+        // TODO: 2018/12/31 实现可配置两个波浪相交局域颜色
     }
 
     /**
@@ -253,36 +274,37 @@ public class WaveView extends View {
      *
      * @param waveLength    波长
      * @param waveAmplitude 振幅
-     * @param offset        偏移量
+     * @param defOffset     默认偏移量
+     * @param animOffset    实时偏移量
      * @return 路径
      */
-    private Path getPath(float waveLength, float waveAmplitude, float offset) {
+    private Path getPath(float waveLength, float waveAmplitude, float defOffset, float animOffset) {
         mPath.reset();
-        // TODO: 2018/12/30 增加初始偏移量
-        //计算波浪曲线路径
-        if (mDrawMode == DRAW_MODE_BEZIER) { //用贝塞尔曲线计算波浪曲线路径
-            float startX;
-            float controlPointsY;
+
+        if (mMoveDirection == MOVE_DIRECTION_LEFT) {
+            animOffset = -animOffset;
+        }
+        float offset = animOffset + defOffset;
+
+        // 计算波浪曲线路径
+        if (mDrawMode == DRAW_MODE_BEZIER) { // 用贝塞尔曲线计算波浪曲线路径
             float halfWaveLength = waveLength / 2;
-            int extraHalfWaveCount = 2;
-            int totalHalfWaveCount = (int) (mTotalWidth / halfWaveLength) + 1 + extraHalfWaveCount;
+            int extraHalfWaveCount = 4; // 为保证能正常左右偏移，左右各加一个完整波长，即需要额外加半波长的数量为 4
+            int totalHalfWaveCount = (int) (mTotalWidth / halfWaveLength + 1) + extraHalfWaveCount;
 
-            if (mMoveDirection == MOVE_DIRECTION_LEFT) {
-                startX = -offset;
-            } else {
-                startX = halfWaveLength * -extraHalfWaveCount + offset;
-            }
-            mPath.moveTo(startX, mWaterLineY);
+            // 控制偏移量在正负波长之间
+            offset = offset % waveLength;
 
+            // 移动到波浪曲线左端点
+            mPath.moveTo(halfWaveLength * -2 + offset, mWaterLevelY);
+
+            // 计算贝塞尔曲线路径
+            float controlPointsY;
             for (int i = 0; i < totalHalfWaveCount; i++) {
                 controlPointsY = getControlPointsY(waveAmplitude, i);
                 mPath.rQuadTo(halfWaveLength / 2, controlPointsY, halfWaveLength, 0);
             }
-        } else { //用三角函数计算波浪曲线路径
-            if (mMoveDirection == MOVE_DIRECTION_RIGHT) {
-                offset = -offset;
-            }
-
+        } else { // 用三角函数计算波浪曲线路径
             int x = 0;
             float y;
             while (x < mTotalWidth) {
@@ -292,7 +314,7 @@ public class WaveView extends View {
             }
         }
 
-        //闭合路径
+        // 闭合路径
         if (mWaveLocation == WAVE_LOCATION_TOP) {
             mPath.lineTo(mTotalWidth, 0);
             mPath.lineTo(0, 0);
@@ -301,6 +323,7 @@ public class WaveView extends View {
             mPath.lineTo(0, mTotalHeight);
         }
         mPath.close();
+
         return mPath;
     }
 
@@ -327,10 +350,10 @@ public class WaveView extends View {
      */
     private float getTrigonometricY(float waveLength, float waveAmplitude, float offset, int x) {
         if (waveAmplitude == 0) {
-            return mWaterLineY;
+            return mWaterLevelY;
         }
-        double w = 2 * Math.PI / waveLength; //角速度 ω = 2π/T
-        double angle = w * x + offset / waveLength * 2 * Math.PI;
+        double w = 2 * Math.PI / waveLength; // 角速度 ω = 2π/T
+        double angle = w * x - offset / waveLength * 2 * Math.PI;
         double trigonometricValue;
         if (mDrawMode == DRAW_MODE_SIN) {
             trigonometricValue = Math.sin(angle);
@@ -339,7 +362,7 @@ public class WaveView extends View {
         } else {
             trigonometricValue = 0;
         }
-        return (float) (waveAmplitude * trigonometricValue + mWaterLineY);
+        return (float) (waveAmplitude * trigonometricValue + mWaterLevelY);
     }
 
     /**
@@ -357,14 +380,14 @@ public class WaveView extends View {
                 if (mStartAnim) {
                     float offset = (float) animation.getAnimatedValue();
                     if (mWaveCount > 1) {
-                        mOffset2 = mLastOffset2 + offset * mCycleDuration / mCycleDuration2;
-                        if (mOffset2 >= mWaveLength2) {
-                            mOffset2 = mOffset2 % mWaveLength2;
+                        mAnimOffset2 = mLastAnimOffset2 + offset * mCycleDuration / mCycleDuration2;
+                        if (mAnimOffset2 >= mWaveLength2) {
+                            mAnimOffset2 = mAnimOffset2 % mWaveLength2;
                         }
                     }
-                    mOffset = offset + mLastOffset;
-                    if (mOffset >= mWaveLength) {
-                        mOffset = mOffset % mWaveLength;
+                    mAnimOffset = mLastAnimOffset + offset;
+                    if (mAnimOffset >= mWaveLength) {
+                        mAnimOffset = mAnimOffset % mWaveLength;
                     }
                     postInvalidate();
                 }
@@ -374,15 +397,15 @@ public class WaveView extends View {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                mLastOffset = mOffset;
-                mLastOffset2 = mOffset2;
+                mLastAnimOffset = mAnimOffset;
+                mLastAnimOffset2 = mAnimOffset2;
             }
 
             @Override
             public void onAnimationRepeat(Animator animation) {
                 super.onAnimationRepeat(animation);
-                mLastOffset = mOffset;
-                mLastOffset2 = mOffset2;
+                mLastAnimOffset = mAnimOffset;
+                mLastAnimOffset2 = mAnimOffset2;
             }
         });
         mAnimator.setDuration(mCycleDuration);
@@ -413,4 +436,6 @@ public class WaveView extends View {
     private void changeCircleDuration2(long circleDuration, long changeDuration) {
         // TODO: 2018/12/31 改变周期时长
     }
+
+    // TODO: 2018/12/31 实现波浪颜色渐变动画
 }

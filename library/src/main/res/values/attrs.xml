@@ -3,9 +3,9 @@
     <declare-styleable name="WaveView">
         <attr name="startAnim" format="boolean" />
         <attr name="waveCount" format="integer" />
-        <attr name="waterLineHeight" format="dimension" />
-        <attr name="waterLineMinHeight" format="dimension" />
-        <attr name="waterLineMaxHeight" format="dimension" />
+        <attr name="waterLevelHeight" format="dimension" />
+        <attr name="waterLevelMinHeight" format="dimension" />
+        <attr name="waterLevelMaxHeight" format="dimension" />
         <attr name="waveAmplitude" format="dimension" />
         <attr name="waveAmplitude2" format="dimension" />
         <attr name="waveLength" format="dimension" />
@@ -14,6 +14,8 @@
         <attr name="waveLengthPercent2" format="float" />
         <attr name="waveDefOffset" format="dimension" />
         <attr name="waveDefOffset2" format="dimension" />
+        <attr name="waveDefOffsetPercent" format="float" />
+        <attr name="waveDefOffsetPercent2" format="float" />
         <attr name="waveColor" format="color" />
         <attr name="waveColor2" format="color" />
         <attr name="cycleDuration" format="integer" />
