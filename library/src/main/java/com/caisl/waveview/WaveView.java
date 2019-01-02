@@ -289,11 +289,14 @@ public class WaveView extends View {
         // 计算波浪曲线路径
         if (mDrawMode == DRAW_MODE_BEZIER) { // 用贝塞尔曲线计算波浪曲线路径
             float halfWaveLength = waveLength / 2;
-            int extraHalfWaveCount = 4; // 为保证能正常左右偏移，左右各加一个完整波长，即需要额外加半波长的数量为 4
+            int extraHalfWaveCount = 2; //
             int totalHalfWaveCount = (int) (mTotalWidth / halfWaveLength + 1) + extraHalfWaveCount;
 
-            // 控制偏移量在正负波长之间
+            // 控制偏移量在 0 到波长之间
             offset = offset % waveLength;
+            if (offset < 0) {
+                offset = offset + waveLength;
+            }
 
             // 移动到波浪曲线左端点
             mPath.moveTo(halfWaveLength * -2 + offset, mWaterLevelY);
