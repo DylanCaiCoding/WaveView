@@ -26,14 +26,6 @@ dependencies {
 	implementation 'com.github.CaiShenglang:WaveView:1.0.2'
 }
 ```
-如果 support 包冲突，可以用以下方式依赖
-```gradle
-dependencies {
-	implementation('com.github.CaiShenglang:WaveView:1.0.2', {
-        	exclude group: 'com.android.support'
-    	})
-}
-```
 #### 3. 在 xml 添加 WaveView 
 ```xml
 <com.caisl.waveview.WaveView
