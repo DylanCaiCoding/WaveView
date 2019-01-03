@@ -53,6 +53,7 @@ dependencies {
         app:waveLocation="top" />
 ```
 自定义属性说明  
+
 自定义属性|类型|作用
 ---|:-:|---
 startAnim|boolean|是否开启动画，默认开启
