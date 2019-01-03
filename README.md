@@ -1,10 +1,10 @@
 ## WaveView
 ### 简介
 少啰嗦，看东西  
-假装这里有gif  
-WaveView 是一个可高度自定义的波浪控件
+![波浪截图](./img/screenshot_wave_view.png)
+WaveView 是一个可以高度自定义的波浪控件，绘制出自己想要的波浪曲线
 - 支持设置一个或两个波浪
-- 支持分别设置波浪的振幅、波长、水位线高度、初始偏移量，可以绘制出想要的波浪曲线
+- 支持分别设置波浪的振幅、波长、水位线高度、初始偏移量
 - 支持分别设置移动一个波长的时间，支持开启和暂停动画
 - 支持设置移动方向（左、右）
 - 支持设置波浪位置（顶部、底部）
@@ -32,28 +32,33 @@ dependencies {
         android:id="@+id/wave_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cycleDuration="5000"
-        app:cycleDuration2="8000"
-        app:drawMode="sin"
+        app:cycleDuration="4000"
+        app:cycleDuration2="5000"
+        app:drawMode="bezier"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:moveDirection="left"
         app:startAnim="false"
-        app:waterLevelHeight="120dp"
-        app:waveAmplitude="15dp"
-        app:waveAmplitude2="15dp"
+        app:waterLevelHeight="150dp"
+        app:waveAmplitude="10dp"
+        app:waveAmplitude2="8dp"
         app:waveColor="#88afb8ff"
         app:waveColor2="#e2c8ff"
+        app:waveLength="300dp"
+        app:waveLengthPercent2="0.8"
+        app:waveDefOffset="20dp"
+        app:waveDefOffsetPercent2="0.3"
         app:waveCount="2"
-        app:waveDefOffsetPercent2="-0.25"
-        app:waveLength2="300dp"
-        app:waveLengthPercent="0.6"
         app:waveLocation="top" />
 ```
+#### 4. 如果需要动态设置开始或停止动画
 ```java
 mWaveView = findViewById(R.id.wave_view);
 mWaveView.startAnim(); // 开始或继续动画
 mWaveView.stopAnim(); // 暂停动画
 ```
-#### 4. 自定义属性说明
+#### 5. 自定义属性说明
 自定义属性|类型|作用
 ---|:-:|---
 startAnim|boolean|是否开启动画，默认开启
@@ -75,5 +80,5 @@ cycleDuration|integer|第一个波浪移动一个周期的时长
 cycleDuration2|integer|第二个波浪移动一个周期的时长
 moveDirection|left、right|移动方向，默认向右（向左、向右）
 waveLocation|top、bottom|波浪位置，默认在底部（顶部、底部）
-drawMode|bezier、sin、cos|绘制的模式，默认是贝塞尔曲线绘制（贝塞尔曲线，正弦曲线，余弦曲线）
+drawMode|bezier、sin、cos|绘制的模式，默认是贝塞尔曲线绘制（贝塞尔曲线、正弦曲线、余弦曲线）
 
