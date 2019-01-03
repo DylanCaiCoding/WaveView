@@ -26,6 +26,14 @@ dependencies {
 	implementation 'com.github.CaiShenglang:WaveView:1.0.2'
 }
 ```
+如果 support 包冲突，可以用以下方式依赖
+```gradle
+dependencies {
+	implementation('com.github.CaiShenglang:WaveView:1.0.2', {
+        exclude group: 'com.android.support'
+    })
+}
+```
 #### 3. 在 xml 添加 WaveView 
 ```xml
 <com.caisl.waveview.WaveView
@@ -67,8 +75,8 @@ waveLength|dimension|第一个波浪的波长，默认是控件宽度
 waveLength2|dimension|第二个波浪的波长，默认是控件宽度
 waveLengthPercent|float|第一个波浪占控件宽度的百分比
 waveLengthPercent2|float|第二个波浪占控件宽度的百分比
-waveDefOffset|dimension|第一个波浪的默认偏移量
-waveDefOffset2|dimension|第二个波浪的默认偏移量
+waveDefOffset|dimension|第一个波浪的初始偏移量
+waveDefOffset2|dimension|第二个波浪的初始偏移量
 waveDefOffsetPercent|float|第一个波浪默认偏移量占波长的百分比
 waveDefOffsetPercent2|float|第二个波浪默认偏移量占第二个波长的百分比
 cycleDuration|integer|第一个波浪移动一个周期的时长
