@@ -33,7 +33,7 @@ moveDirection|left、right|移动方向，默认向右（向左、向右）
 waveLocation|top、bottom|波浪位置，默认在底部（顶部、底部）
 drawMode|bezier、sin、cos|绘制的模式，默认是贝塞尔曲线绘制（贝塞尔曲线，正弦曲线，余弦曲线）
 
-##例子
+## 例子
 ```xml
 <com.caisl.waveview.WaveView
         android:id="@+id/wave_view"
