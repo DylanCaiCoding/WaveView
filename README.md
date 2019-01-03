@@ -30,8 +30,8 @@ dependencies {
 ```gradle
 dependencies {
 	implementation('com.github.CaiShenglang:WaveView:1.0.2', {
-        exclude group: 'com.android.support'
-    })
+        	exclude group: 'com.android.support'
+    	})
 }
 ```
 #### 3. 在 xml 添加 WaveView 
