@@ -52,13 +52,7 @@ dependencies {
         app:waveCount="2"
         app:waveLocation="top" />
 ```
-#### 4. 如果需要动态设置开始或停止动画
-```java
-mWaveView = findViewById(R.id.wave_view);
-mWaveView.startAnim(); // 开始或继续动画
-mWaveView.stopAnim(); // 暂停动画
-```
-#### 5. 自定义属性说明
+自定义属性说明
 自定义属性|类型|作用
 ---|:-:|---
 startAnim|boolean|是否开启动画，默认开启
@@ -81,4 +75,9 @@ cycleDuration2|integer|第二个波浪移动一个周期的时长
 moveDirection|left、right|移动方向，默认向右（向左、向右）
 waveLocation|top、bottom|波浪位置，默认在底部（顶部、底部）
 drawMode|bezier、sin、cos|绘制的模式，默认是贝塞尔曲线绘制（贝塞尔曲线、正弦曲线、余弦曲线）
-
+#### 4. 如果需要动态设置开始或停止动画
+```java
+mWaveView = findViewById(R.id.wave_view);
+mWaveView.startAnim(); // 开始或继续动画
+mWaveView.stopAnim(); // 暂停动画
+```
