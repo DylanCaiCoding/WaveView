@@ -2,7 +2,7 @@
 ### 简介
 少啰嗦，看东西  
 ![波浪截图](./img/screenshot_wave_view.png)  
-WaveView 是一个支持高度自定义的波浪控件，能绘制出自己想要的波浪曲线动画
+WaveView 是一个支持高度自定义的波浪控件，能绘制出自己想要的波浪曲线
 - 支持设置一个或两个波浪
 - 支持分别设置波浪的振幅、波长、水位线高度、初始偏移量
 - 支持分别设置移动一个波长的时间，支持开启和暂停动画
@@ -35,9 +35,6 @@ dependencies {
         app:cycleDuration="4000"
         app:cycleDuration2="5000"
         app:drawMode="bezier"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:moveDirection="left"
         app:startAnim="false"
         app:waterLevelHeight="150dp"
