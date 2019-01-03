@@ -1,7 +1,8 @@
-# WaveView
-## 简介
+## WaveView
+### 简介
 少啰嗦，看东西  
-假装有gif
+假装这里有gif
+WaveView 是一个可高度自定义的波浪控件
 - 支持设置一个或两个波浪
 - 支持分别设置波浪的振幅、波长、水位线高度、初始偏移量，可以绘制出想要的波浪曲线
 - 支持分别设置移动一个波长的时间，支持开启和暂停动画
@@ -9,7 +10,50 @@
 - 支持设置波浪位置（顶部、底部）
 - 支持两种绘制方式（贝塞尔曲线和三角函数曲线）
 
-## 用法
+### 用法
+#### 1. 在 project 的 build.gradle 添加以下代码
+```gradle
+allprojects {
+	repositories {
+		...
+		maven { url 'https://www.jitpack.io' }
+	}
+}
+```
+#### 2. 在 app 的 build.gradle 添加依赖
+```gradle
+dependencies {
+	implementation 'com.github.CaiShenglang:WaveView:1.0.2'
+}
+```
+#### 3. 在 xml 添加 WaveView 
+```xml
+<com.caisl.waveview.WaveView
+        android:id="@+id/wave_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cycleDuration="5000"
+        app:cycleDuration2="8000"
+        app:drawMode="sin"
+        app:moveDirection="left"
+        app:startAnim="false"
+        app:waterLevelHeight="120dp"
+        app:waveAmplitude="15dp"
+        app:waveAmplitude2="15dp"
+        app:waveColor="#88afb8ff"
+        app:waveColor2="#e2c8ff"
+        app:waveCount="2"
+        app:waveDefOffsetPercent2="-0.25"
+        app:waveLength2="300dp"
+        app:waveLengthPercent="0.6"
+        app:waveLocation="top" />
+```
+```java
+mWaveView = findViewById(R.id.wave_view);
+mWaveView.startAnim(); // 开始或继续动画
+mWaveView.stopAnim(); // 暂停动画
+```
+#### 4. 自定义属性说明
 自定义属性|类型|作用
 ---|:-:|---
 startAnim|boolean|是否开启动画，默认开启
@@ -33,29 +77,3 @@ moveDirection|left、right|移动方向，默认向右（向左、向右）
 waveLocation|top、bottom|波浪位置，默认在底部（顶部、底部）
 drawMode|bezier、sin、cos|绘制的模式，默认是贝塞尔曲线绘制（贝塞尔曲线，正弦曲线，余弦曲线）
 
-## 例子
-```xml
-<com.caisl.waveview.WaveView
-        android:id="@+id/wave_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cycleDuration="5000"
-        app:cycleDuration2="8000"
-        app:drawMode="sin"
-        app:moveDirection="left"
-        app:startAnim="false"
-        app:waterLevelHeight="120dp"
-        app:waveAmplitude="15dp"
-        app:waveAmplitude2="15dp"
-        app:waveColor="#88afb8ff"
-        app:waveColor2="#e2c8ff"
-        app:waveCount="2"
-        app:waveDefOffsetPercent2="-0.25"
-        app:waveLength2="300dp"
-        app:waveLengthPercent="0.6"
-        app:waveLocation="top" />
-```
-```java
-	mWaveView.startAnim(); // 开始或继续动画
-	mWaveView.stopAnim(); // 暂停动画
-```
