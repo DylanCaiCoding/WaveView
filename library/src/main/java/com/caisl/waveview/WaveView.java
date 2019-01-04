@@ -8,7 +8,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,7 +158,7 @@ public class WaveView extends View {
         this(context, attrs, -1);
     }
 
-    public WaveView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public WaveView(Context context,  AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.WaveView);
@@ -295,6 +294,7 @@ public class WaveView extends View {
                 offset = offset + waveLength;
             }
 
+            // TODO: 2019/1/3 优化至少减少绘制一个波长，能少绘制就少绘制，优化到最优解
             // 移动到波浪曲线左端点
             mPath.moveTo(halfWaveLength * -2 + offset, mWaterLevelY);
 
