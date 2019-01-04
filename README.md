@@ -23,7 +23,7 @@ allprojects {
 #### 2. 在 app 的 build.gradle 添加依赖
 ```gradle
 dependencies {
-	implementation 'com.github.CaiShenglang:WaveView:1.0.2'
+	implementation 'com.github.CaiShenglang:WaveView:1.0.3'
 }
 ```
 #### 3. 在 xml 添加 WaveView 
