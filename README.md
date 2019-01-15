@@ -1,6 +1,6 @@
 ## WaveView
 ### 简介
-少啰嗦，看东西  
+少啰嗦，看东西（假装是个 gif）  
 ![波浪截图](./img/screenshot_wave_view.png)  
 WaveView 是一个可以高度自定义的波浪控件，能绘制出自己想要的曲线波浪
 - 支持设置一个或两个波浪
