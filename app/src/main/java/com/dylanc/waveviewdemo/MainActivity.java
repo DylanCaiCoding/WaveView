@@ -1,10 +1,10 @@
-package com.caisl.waveviewdemo;
+package com.dylanc.waveviewdemo;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
-import com.caisl.waveview.WaveView;
+import com.dylanc.waveview.WaveView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 

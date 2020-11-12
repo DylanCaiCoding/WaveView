@@ -1,4 +1,4 @@
-package com.caisl.waveview;
+package com.dylanc.waveview;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -15,7 +15,7 @@ import android.view.animation.LinearInterpolator;
 
 
 /**
- * Creator: caisl;
+ * Creator: Dylanc;
  * Date created: 2018/12/13;
  * Contact: 361366288@qq.com;
  * Description: 波浪控件
